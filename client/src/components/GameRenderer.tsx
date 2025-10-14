@@ -30,6 +30,7 @@ function mapTheme(theme: string | undefined) {
 }
 
 export function GameRenderer({ pipes, playerY, status, score, onFlap, theme, opponents = [] }: Props) {
+export function GameRenderer({ pipes, playerY, status, score, onFlap, theme }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const colors = mapTheme(theme);
 
@@ -76,6 +77,10 @@ export function GameRenderer({ pipes, playerY, status, score, onFlap, theme, opp
       const offsetX = playerX + (index + 1) * 26;
       drawDuck(offsetX, yPos, { color, opacity: opponent.status === 'alive' ? 0.9 : 0.5 });
     });
+    ctx.fillStyle = '#facc15';
+    ctx.beginPath();
+    ctx.ellipse(playerX, playerYpx, 18, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
 
     ctx.fillStyle = '#0f172a';
     ctx.font = 'bold 24px Rubik, sans-serif';
@@ -93,6 +98,7 @@ export function GameRenderer({ pipes, playerY, status, score, onFlap, theme, opp
       ctx.fillText('Tap to retry', GAME_WIDTH / 2, GAME_HEIGHT / 2 + 36);
     }
   }, [pipes, playerY, status, score, colors.background, colors.ground, colors.pipe, opponents]);
+  }, [pipes, playerY, status, score, colors.background, colors.ground, colors.pipe]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

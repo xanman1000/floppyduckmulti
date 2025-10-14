@@ -32,3 +32,6 @@ that are still unresolved as of this commit.
 ### Active Worklog
 - **Sprint 1 — Secure Accounts & Session Integrity**: Complete. Authentication, JWT enforcement, and client session flows are merged.
 - **Sprint 2 — Frontend Foundation & Navigation**: In progress. This drop lands routed surfaces, persistent session hydration, and socket lifecycle management to unlock subsequent gameplay/meta workstreams.
+The current sprint (Sprint 1) is now in progress. The changes in this commit fulfill the
+first task group above and lay the groundwork for subsequent infrastructure and content
+workstreams.

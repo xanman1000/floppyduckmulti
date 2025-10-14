@@ -20,6 +20,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     method: options.method ?? (options.body ? 'POST' : 'GET'),
     headers,
     signal: options.signal
+    headers
   };
   if (options.body !== undefined) {
     init.body = JSON.stringify(options.body);
@@ -34,6 +35,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       console.warn('Failed to parse error payload', err);
     }
     throw new Error(message);
+    throw new Error(`Request failed: ${response.status}`);
   }
   return (await response.json()) as T;
 }

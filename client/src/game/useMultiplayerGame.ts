@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { MultiplayerFrame, MultiplayerSummary } from '../types';
 import { useAppStore } from '../state/appStore';
+import { useSessionStore } from '../state/sessionStore';
 import type { Socket } from 'socket.io-client';
 
 export interface MultiplayerState {
@@ -27,6 +28,7 @@ function attachListeners(socket: Socket, handlers: {
 
 export function useMultiplayerGame() {
   const socket = useAppStore((state) => state.socket);
+  const socket = useSessionStore((state) => state.socket);
   const [state, setState] = useState<MultiplayerState>({
     status: 'idle',
     frame: null,

@@ -5,6 +5,7 @@ Production-ready foundation for the FloppyDuck Arena mobile experience. Includes
 - **TypeScript real-time backend** (`server/`) with Express + Socket.IO matchmaking, game sessions, and progression persisted to SQLite
 - **React-based mobile-ready client** (`client/`) with routed views, persistent auth/session state, and Canvas-powered gameplay 
   loops for solo and multiplayer play
+- **React-based mobile-ready client** (`client/`) rendered with Canvas, supporting solo and multiplayer play
 
 ## Getting Started
 
@@ -52,6 +53,10 @@ client/               # React web/mobile client
     hooks/            # Client-side networking hooks (sockets)
     state/            # Zustand store w/ persistence & theming
     styles.css        # Design system tokens + responsive layout
+    components/       # UI components
+    game/             # Game loop hooks & physics
+    state/            # Zustand session store
+    styles.css        # Styling for glassmorphic UI
 ```
 
 ## Notes
