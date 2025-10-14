@@ -2,6 +2,11 @@
 
 This log captures tangible progress toward the pre-launch completion plan.
 
+## 2024-06-03
+- Replatformed the frontend into routed views with protected auth flows, persistent session hydration, and a socket manager supporting reconnection awareness.
+- Added Lobby, Solo, Multiplayer, Profile, and Store surfaces with design-system styling to mirror the product pillars.
+- Delivered cosmetic loadout management, session refresh, and matchmaking HUD polish to align with the frontend delivery plan.
+
 ## 2024-06-02
 - Introduced durable account records with hashed credentials, JWT issuance, and guest-to-owner upgrades.
 - Locked down REST and Socket flows behind authentication middleware to prevent cross-player tampering.

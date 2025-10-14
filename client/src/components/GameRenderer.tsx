@@ -9,6 +9,11 @@ interface Props {
   score: number;
   onFlap: () => void;
   theme?: 'daylight' | 'dusk' | string;
+  opponents?: Array<{
+    playerId: string;
+    y: number;
+    status: 'alive' | 'eliminated';
+  }>;
 }
 
 const PLAYER_X = 0.4;
@@ -24,6 +29,7 @@ function mapTheme(theme: string | undefined) {
   }
 }
 
+export function GameRenderer({ pipes, playerY, status, score, onFlap, theme, opponents = [] }: Props) {
 export function GameRenderer({ pipes, playerY, status, score, onFlap, theme }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const colors = mapTheme(theme);
@@ -53,6 +59,24 @@ export function GameRenderer({ pipes, playerY, status, score, onFlap, theme }: P
 
     const playerX = PLAYER_X * GAME_WIDTH;
     const playerYpx = playerY * GAME_HEIGHT;
+    const drawDuck = (x: number, y: number, options: { color: string; opacity?: number }) => {
+      ctx.save();
+      ctx.globalAlpha = options.opacity ?? 1;
+      ctx.fillStyle = options.color;
+      ctx.beginPath();
+      ctx.ellipse(x, y, 18, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    drawDuck(playerX, playerYpx, { color: '#facc15' });
+
+    opponents.forEach((opponent, index) => {
+      const yPos = opponent.y * GAME_HEIGHT;
+      const color = opponent.status === 'alive' ? '#fb7185' : '#94a3b8';
+      const offsetX = playerX + (index + 1) * 26;
+      drawDuck(offsetX, yPos, { color, opacity: opponent.status === 'alive' ? 0.9 : 0.5 });
+    });
     ctx.fillStyle = '#facc15';
     ctx.beginPath();
     ctx.ellipse(playerX, playerYpx, 18, 14, 0, 0, Math.PI * 2);
@@ -73,6 +97,7 @@ export function GameRenderer({ pipes, playerY, status, score, onFlap, theme }: P
       ctx.fillText('Game Over', GAME_WIDTH / 2, GAME_HEIGHT / 2);
       ctx.fillText('Tap to retry', GAME_WIDTH / 2, GAME_HEIGHT / 2 + 36);
     }
+  }, [pipes, playerY, status, score, colors.background, colors.ground, colors.pipe, opponents]);
   }, [pipes, playerY, status, score, colors.background, colors.ground, colors.pipe]);
 
   useEffect(() => {

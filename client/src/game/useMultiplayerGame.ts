@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { MultiplayerFrame, MultiplayerSummary } from '../types';
+import { useAppStore } from '../state/appStore';
 import { useSessionStore } from '../state/sessionStore';
 import type { Socket } from 'socket.io-client';
 
@@ -26,6 +27,7 @@ function attachListeners(socket: Socket, handlers: {
 }
 
 export function useMultiplayerGame() {
+  const socket = useAppStore((state) => state.socket);
   const socket = useSessionStore((state) => state.socket);
   const [state, setState] = useState<MultiplayerState>({
     status: 'idle',
@@ -50,6 +52,12 @@ export function useMultiplayerGame() {
     });
 
     return detach;
+  }, [socket]);
+
+  useEffect(() => {
+    if (!socket) {
+      setState({ status: 'idle', frame: null, summary: null, seed: null });
+    }
   }, [socket]);
 
   const joinQueue = useCallback(

@@ -6,6 +6,7 @@ interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
   token?: string | null;
+  signal?: AbortSignal;
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -17,6 +18,8 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
   const init: RequestInit = {
     method: options.method ?? (options.body ? 'POST' : 'GET'),
+    headers,
+    signal: options.signal
     headers
   };
   if (options.body !== undefined) {
@@ -24,6 +27,14 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
   const response = await fetch(`${API_BASE}${path}`, init);
   if (!response.ok) {
+    let message = `Request failed: ${response.status}`;
+    try {
+      const data = await response.json();
+      message = typeof data?.error === 'string' ? data.error : data?.message ?? message;
+    } catch (err) {
+      console.warn('Failed to parse error payload', err);
+    }
+    throw new Error(message);
     throw new Error(`Request failed: ${response.status}`);
   }
   return (await response.json()) as T;
